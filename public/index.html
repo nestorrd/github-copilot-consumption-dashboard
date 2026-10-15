@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copilot Session Cost Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Copilot Session Cost Dashboard</h1>
+    <p class="muted">Tracks sessions started from this app through the GitHub Copilot SDK. 1 AI Credit = $0.01 USD.
+      <span id="budgetInfo"></span></p>
+    <p class="muted">Credit conversion follows the SDK example: nano-AIU / 1e9 (configurable). USD is an estimate, not an invoice.</p>
+    <p id="connectionStatus" class="error" role="status"></p>
+  </header>
+
+  <section class="panel" id="livePanel">
+    <div class="panel-head">
+      <h2>Current session <span class="chip live">LIVE telemetry</span></h2>
+      <span class="muted" id="liveStatus"></span>
+    </div>
+    <div id="liveIdle">
+      <p class="muted">No active session. Starting a session creates a new Copilot SDK session; usage is captured from the moment it starts.</p>
+      <div class="row">
+        <select id="modelSelect" aria-label="Model"><option value="">Default model</option></select>
+        <button id="startBtn" class="primary">Start session</button>
+      </div>
+      <p class="error" id="startError"></p>
+    </div>
+    <div id="liveActive" hidden>
+      <div class="live-grid">
+        <div><span class="label">Session</span><span id="liveId" class="mono"></span></div>
+        <div><span class="label">Model</span><span id="liveModel"></span></div>
+        <div><span class="label">Elapsed</span><span id="liveElapsed"></span></div>
+        <div><span class="label">Input / Output / Cached tokens</span><span id="liveTokens"></span></div>
+        <div><span class="label">API calls</span><span id="liveCalls"></span></div>
+        <div><span class="label">Context window (session.usage_info)</span><span id="liveContext"></span></div>
+        <div><span class="label">AI Credits</span><span id="liveCredits" class="big"></span></div>
+        <div><span class="label">Estimated cost</span><span id="liveCost" class="big"></span></div>
+      </div>
+      <div class="bar"><div id="liveBar"></div></div>
+      <p class="muted" id="liveBarLabel"></p>
+      <div class="row">
+        <input id="promptInput" type="text" placeholder="Send a prompt to this session..." aria-label="Prompt">
+        <button id="sendBtn" class="primary">Send</button>
+        <button id="endBtn" class="danger">End &amp; save session</button>
+      </div>
+      <p class="error" id="liveError"></p>
+    </div>
+  </section>
+
+  <section class="cards" id="cards"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Session history <span class="chip persisted">PERSISTED</span></h2>
+      <span class="muted">Completed sessions saved locally in a JSON file</span>
+    </div>
+    <div class="filters">
+      <label>Date <input type="date" id="fDate"></label>
+      <label>Model <select id="fModel"><option value="">All models</option></select></label>
+      <label>Session <input type="search" id="fSession" placeholder="Session ID contains..."></label>
+      <button id="fClear">Clear</button>
+    </div>
+    <table id="table">
+      <thead>
+        <tr><th>Session</th><th>Date</th><th>Duration</th><th>Model</th><th class="num">Input Tokens</th><th class="num">Output Tokens</th><th class="num">AI Credits</th><th class="num">Cost</th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="muted" id="emptyMsg" hidden>No persisted sessions match.</p>
+  </section>
+
+  <section class="panel" id="detailPanel" hidden>
+    <div class="panel-head">
+      <h2>Session details <span class="chip persisted">PERSISTED</span></h2>
+      <button id="closeDetail">Close</button>
+    </div>
+    <div id="detailBody"></div>
+  </section>
+
+  <footer class="muted">
+    <p>Live values come from SDK events and the <em>experimental</em> <code>session.usage.getMetrics</code> RPC and may change until the session is saved.
+      Per-call data comes from the ephemeral <code>assistant.usage</code> event and only exists if it was captured by this app.
+      Values the SDK does not report are shown as "Not available". This app cannot read arbitrary historical Copilot CLI sessions.</p>
+  </footer>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "copilot-session-cost-dashboard",
+  "version": "1.0.0",
+  "description": "Local dashboard for GitHub Copilot SDK session token usage, AI Credits and estimated USD cost",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node --env-file-if-exists=.env dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test"
+  },
+  "dependencies": {
+    "@github/copilot-sdk": "1.0.22"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

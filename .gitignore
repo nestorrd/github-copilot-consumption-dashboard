@@ -1,0 +1,31 @@
+# Dependencies and generated output
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local configuration and credentials; only the sanitized template is shared
+.env*
+!.env.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+
+# All runtime history, exports, temporary files and backups
+/data/*
+!/data/.gitkeep
+/.copilot/
+*.log
+logs/
+*.tmp
+*.bak
+*.corrupt-*
+
+# Per-user editor and operating-system metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
