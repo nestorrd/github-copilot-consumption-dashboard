@@ -55,6 +55,7 @@ export interface LiveSnapshot extends Totals {
   requestedModel: string | null;
   busy: boolean;
   ending: boolean;
+  completed: boolean;
   lastError: string | null;
   telemetryWarnings: string[];
   usageInfoEventCount: number;
@@ -62,5 +63,26 @@ export interface LiveSnapshot extends Totals {
   calls: CallRecord[];
   context: { currentTokens: number; tokenLimit: number; messagesLength: number } | null;
   metricsSource: "session.usage.getMetrics" | "captured assistant.usage events";
+  updatedAt: string;
+}
+
+export type SessionStatus = "active" | "processing" | "completed";
+export type SessionStorage = "live" | "saved";
+
+export interface DashboardSession extends Totals {
+  id: string;
+  startTime: string;
+  endTime: string | null;
+  durationMs: number;
+  status: SessionStatus;
+  storage: SessionStorage;
+  callCount: number;
+  lastError: string | null;
+  origin: "dashboard" | "copilot";
+}
+
+export interface DashboardState {
+  sessions: DashboardSession[];
+  live: LiveSnapshot | null;
   updatedAt: string;
 }

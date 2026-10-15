@@ -222,6 +222,7 @@ export class SessionTracker {
       };
 
       this.live = live;
+      this.emit();
       await this.refreshMetrics(live);
       return this.snapshot()!;
     } finally {
@@ -329,6 +330,7 @@ export class SessionTracker {
       requestedModel: live.requestedModel,
       busy: live.busy,
       ending: live.ending,
+      completed: live.completedSummary !== undefined,
       lastError: live.lastError,
       telemetryWarnings: [...live.warnings],
       usageInfoEventCount: live.usageInfoEventCount,

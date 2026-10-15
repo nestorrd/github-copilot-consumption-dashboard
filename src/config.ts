@@ -1,4 +1,5 @@
 import path from "node:path";
+import os from "node:os";
 
 function num(name: string, fallback: number): number {
   const raw = process.env[name];
@@ -16,6 +17,9 @@ export const config = {
   sessionCreditBudget: num("SESSION_CREDIT_BUDGET", 100),
   warnRatio: num("SESSION_CREDIT_WARN_RATIO", 0.8),
   dataFile: path.resolve(process.env.DATA_FILE || "./data/sessions.json"),
+  copilotSessionStateDir: path.resolve(
+    process.env.COPILOT_SESSION_STATE_DIR || path.join(os.homedir(), ".copilot", "session-state"),
+  ),
   nanoAiuPerCredit: num("NANO_AIU_PER_AI_CREDIT", 1_000_000_000),
   githubToken: process.env.COPILOT_GITHUB_TOKEN || undefined,
   defaultModel: process.env.DEFAULT_MODEL || undefined,
